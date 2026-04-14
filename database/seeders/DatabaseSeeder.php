@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Customer;
-use App\Models\Product;
-use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Account;
+use App\Models\Customer;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\OrderItem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,9 +19,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed Users
-        User::factory(10)->create();
-
         // Seed Customers
         $customers = Customer::factory(10)->create();
 
@@ -44,9 +40,12 @@ class DatabaseSeeder extends Seeder
         });
 
         // Seed Accounts
-        $customers->each(function ($customer) {
+        $customers->each(function ($customer, $index) {
             Account::factory()->create([
                 'customer_id' => $customer->id,
+                'username' => $index === 0 ? 'admin' : fake()->unique()->userName(),
+                'password' => bcrypt($index === 0 ? 'Admin12345!' : 'password'),
+                'is_admin' => $index === 0,
             ]);
         });
     }
