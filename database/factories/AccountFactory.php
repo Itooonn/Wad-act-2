@@ -17,6 +17,7 @@ class AccountFactory extends Factory
         return [
             'username' => $this->faker->unique()->userName(),
             'password' => bcrypt('password'),
+            'is_admin' => false,
             'customer_id' => null, // Set in seeder
         ];
     }

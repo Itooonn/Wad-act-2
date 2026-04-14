@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 
@@ -12,15 +14,20 @@ class Customer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email'];
+    protected $fillable = ['name', 'email', 'user_id'];
 
-    public function orders() 
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
 
-    public function account() 
+    public function account(): HasOne
     {
-        return $this->hasOne(CustomerAccount::class);
+        return $this->hasOne(Account::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
